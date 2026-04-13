@@ -20,7 +20,7 @@
   --s-rojo:    #e11d48;
   --s-verde:   #16a34a;
   --s-azul:    #2563eb;
-  --s-amarillo: #facc15; /* Amarillo puro para el estímulo */
+  --s-amarillo: #facc15;
   --s-negro:   #000000;
   --radius:    12px;
 }
@@ -32,16 +32,20 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .screen.active { display: block; }
 @keyframes fadeUp { from { opacity:0; transform:translateY(12px) } to { opacity:1; transform:none } }
 
-h1 { font-family: 'Playfair Display', serif; font-size: 3.2rem; font-weight: 900; line-height: 1; margin-bottom: 24px; margin-top: 20px; }
-h1 span { color: #ca8a04; } /* Beige para la interfaz */
+.lab-badge { display: inline-flex; align-items: center; gap: 8px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .12em; color: var(--text); text-transform: uppercase; border: 1px solid var(--border); padding: 6px 14px; border-radius: 100px; margin-bottom: 20px; }
+.lab-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #eab308; }
+
+h1 { font-family: 'Playfair Display', serif; font-size: 3.2rem; font-weight: 900; line-height: 1; margin-bottom: 12px; }
+h1 span { color: #ca8a04; }
 
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; margin-bottom: 14px; }
-.card-title { font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+.card-title { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
 
 .step-list { display: flex; flex-direction: column; gap: 12px; }
 .step { display: flex; align-items: flex-start; gap: 12px; }
-.step-num { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: rgba(202,138,4,.1); border: 1px solid rgba(202,138,4,.3); color: #ca8a04; font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; display: flex; align-items: center; justify-content: center; }
-.step-text { font-size: 1.05rem; color: var(--text-dim); line-height: 1.5; }
+.step-num { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: rgba(234,179,8,.15); border: 1px solid rgba(234,179,8,.3); color: #ca8a04; font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; display: flex; align-items: center; justify-content: center; }
+.step-text { font-size: .9rem; color: var(--text-dim); line-height: 1.5; }
+.step-text strong { color: var(--text); }
 
 .key-row { display: flex; gap: 8px; flex-wrap: wrap; }
 .key-pill { display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font-size: 13px; }
@@ -55,25 +59,24 @@ h1 span { color: #ca8a04; } /* Beige para la interfaz */
 .res-btn:active { transform: scale(0.92); border-color: #000; }
 
 .stimulus-area { flex: 1; display: flex; align-items: center; justify-content: center; }
-/* Ajustado tamaño de letra del estímulo */
-.stimulus-word { font-family: 'Playfair Display', serif; font-size: 3.8rem; font-weight: 900; }
+/* Estímulo achicado para el cel */
+.stimulus-word { font-family: 'Playfair Display', serif; font-size: 3.5rem; font-weight: 900; }
 
-.btn-primary { width: 100%; padding: 18px; border-radius: 12px; background: #ca8a04; color: #fff; border: none; font-weight: 700; cursor: pointer; font-size: 1.1rem; }
+.btn-primary { width: 100%; padding: 18px; border-radius: 12px; background: #ca8a04; color: #fff; border: none; font-weight: 700; cursor: pointer; font-size: 1rem; }
 input[type="text"] { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 16px; margin-top: 8px; outline: none; }
 
-.credit { margin-top: 48px; text-align: center; color: var(--text-dim); font-size: 15px; line-height: 1.6; font-style: italic; border-top: 1px solid var(--border); padding-top: 20px; }
+.credit { margin-top: 40px; text-align: center; color: var(--muted); font-size: 16px; line-height: 1.6; font-style: italic; border-top: 1px solid var(--border); padding-top: 20px;}
 
 .feedback-flash { position: fixed; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.1s; z-index: 100; }
 .feedback-flash.correct { background: rgba(22, 163, 74, 0.1); }
 .feedback-flash.incorrect { background: rgba(225, 29, 72, 0.1); }
 .feedback-flash.show { opacity: 1; }
-
-#screen-stage-intro { text-align: center; padding-top: 60px; }
 </style>
 </head>
 <body>
 
 <div id="screen-start" class="screen active">
+  <div class="lab-badge">NyPE · Stroop Test</div>
   <h1>Test de<br><span>Stroop</span></h1>
   
   <div class="card">
@@ -108,11 +111,11 @@ input[type="text"] { width: 100%; padding: 14px; border: 1px solid var(--border)
 
   <button class="btn-primary" onclick="startExperiment()">Comenzar →</button>
   
-  <p class="credit">Adaptado para la materia Estudio del Comportamiento Humano (TP5).<br>Experimento original de Guillermo Solovey, UTDT.</p>
+  <p class="credit">Adaptado para Estudio del Comportamiento Humano (UTDT) por Analí Taboh.<br>Original de Guillermo Solovey para NYPE (UTDT).</p>
 </div>
 
-<div id="screen-stage-intro" class="screen">
-  <h1 id="stage-title" style="color:#ca8a04">Práctica</h1>
+<div id="screen-stage-intro" class="screen" style="text-align:center; padding-top:80px">
+  <h1 id="stage-title" style="color:#ca8a04"></h1>
   <div class="card">
     <p id="stage-desc" style="line-height:1.6; color:var(--text-dim)"></p>
   </div>
@@ -120,7 +123,7 @@ input[type="text"] { width: 100%; padding: 14px; border: 1px solid var(--border)
 </div>
 
 <div id="screen-trial" class="screen">
-  <div id="trial-progress" style="font-family:'DM Mono'; font-size:12px; color:var(--accent2); text-transform:uppercase;"></div>
+  <div id="trial-progress" style="font-family:'DM Mono'; font-size:11px; color:var(--accent2); text-transform:uppercase;"></div>
   <div class="stimulus-area">
     <div id="fixation" style="font-size: 4rem; color: #e2e8f0;">+</div>
     <div id="stimulus" class="stimulus-word" style="display:none"></div>
@@ -144,8 +147,8 @@ input[type="text"] { width: 100%; padding: 14px; border: 1px solid var(--border)
 
 <script>
 const BLOCKS = [
-  { id: 'PRACTICA', title: 'Práctica', trials: 6, desc: 'Vamos a hacer unos ensayos de práctica para que te acostumbres a los botones.' },
-  { id: 'TEST', title: 'Test Real', trials: 30, desc: 'Ahora comienza el test real. Los resultados de esta parte serán grabados.' }
+  { id: 'PRACTICA', title: 'Práctica', trials: 6, desc: 'Vamos a hacer 6 ensayos de práctica para que te acostumbres a los botones.' },
+  { id: 'TEST', title: 'Test Real', trials: 30, desc: 'Ahora comienza el test real de 30 ensayos. ¡Hacélo lo más rápido posible!' }
 ];
 
 const INK_COLORS = {
