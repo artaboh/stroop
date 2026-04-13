@@ -28,14 +28,14 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100dvh; display: flex; justify-content: center; overflow-x: hidden; touch-action: manipulation; }
 
-.screen { display: none; width: 100%; max-width: 600px; padding: 40px 20px 60px; animation: fadeUp .3s ease both; }
+.screen { display: none; width: 100%; max-width: 600px; padding: 40px 20px 20px; animation: fadeUp .3s ease both; }
 .screen.active { display: block; }
 @keyframes fadeUp { from { opacity:0; transform:translateY(12px) } to { opacity:1; transform:none } }
 
 .lab-badge { display: inline-flex; align-items: center; gap: 8px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .12em; color: var(--text); text-transform: uppercase; border: 1px solid var(--border); padding: 6px 14px; border-radius: 100px; margin-bottom: 20px; }
 .lab-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #eab308; }
 
-h1 { font-family: 'Playfair Display', serif; font-size: 3.2rem; font-weight: 900; line-height: 1; margin-bottom: 12px; }
+h1 { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 900; line-height: 1; margin-bottom: 12px; }
 h1 span { color: #ca8a04; }
 
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; margin-bottom: 14px; }
@@ -65,7 +65,7 @@ h1 span { color: #ca8a04; }
 .btn-primary { width: 100%; padding: 18px; border-radius: 12px; background: #ca8a04; color: #fff; border: none; font-weight: 700; cursor: pointer; font-size: 1rem; }
 input[type="text"] { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 16px; margin-top: 8px; outline: none; }
 
-.credit { margin-top: 40px; text-align: center; color: var(--muted); font-size: 16px; line-height: 1.6; font-style: italic; border-top: 1px solid var(--border); padding-top: 20px;}
+.credit { margin-top: 15px; text-align: center; color: var(--muted); font-size: 16px; line-height: 1.6; font-style: italic; border-top: 1px solid var(--border); padding-top: 20px;}
 
 .feedback-flash { position: fixed; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.1s; z-index: 100; }
 .feedback-flash.correct { background: rgba(22, 163, 74, 0.1); }
@@ -76,7 +76,6 @@ input[type="text"] { width: 100%; padding: 14px; border: 1px solid var(--border)
 <body>
 
 <div id="screen-start" class="screen active">
-  <div class="lab-badge">NyPE · Stroop Test</div>
   <h1>Test de<br><span>Stroop</span></h1>
   
   <div class="card">
@@ -148,7 +147,7 @@ input[type="text"] { width: 100%; padding: 14px; border: 1px solid var(--border)
 <script>
 const BLOCKS = [
   { id: 'PRACTICA', title: 'Práctica', trials: 6, desc: 'Vamos a hacer 6 ensayos de práctica para que te acostumbres a los botones.' },
-  { id: 'TEST', title: 'Test Real', trials: 30, desc: 'Ahora comienza el test real de 30 ensayos. ¡Hacélo lo más rápido posible!' }
+  { id: 'TEST', title: 'Test', trials: 30, desc: 'Ahora comienza el test real de 30 ensayos. ¡Hacélo lo más rápido posible!' }
 ];
 
 const INK_COLORS = {
