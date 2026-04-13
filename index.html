@@ -3,51 +3,73 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-<title>Stroop Bonus · NyPE</title>
+<title>Stroop Test · Estudio del Comportamiento Humano</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@700;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap');
 
 :root {
-  --bg: #ffffff;
-  --surface: #f8fafc;
-  --border: #e2e8f0;
-  --text: #0f172a;
-  --text-dim: #64748b;
-  --accent: #2563eb;
-  /* Colores Stroop */
-  --s-rojo: #e11d48;
-  --s-verde: #16a34a;
-  --s-azul: #2563eb;
-  --s-amarillo: #eab308;
-  --s-negro: #000000;
+  --bg:        #ffffff; /* Fondo blanco académico */
+  --surface:   #f8fafc;
+  --border:    #e2e8f0;
+  --accent:    #eab308; /* El amarillo de los números de tu colega */
+  --accent2:   #2563eb;
+  --text:      #0f172a;
+  --text-dim:  #64748b;
+  --muted:     #94a3b8;
+  /* Tus 5 colores originales */
+  --s-rojo:    #e11d48;
+  --s-verde:   #16a34a;
+  --s-azul:    #2563eb;
+  --s-amarillo: #ca8a04;
+  --s-negro:   #000000;
+  --radius:    12px;
 }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100dvh; display: flex; justify-content: center; }
+body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100dvh; display: flex; justify-content: center; overflow-x: hidden; touch-action: manipulation; }
 
-.screen { display: none; width: 100%; max-width: 600px; padding: 40px 20px; animation: fadeIn 0.3s ease; }
+.screen { display: none; width: 100%; max-width: 600px; padding: 40px 20px 60px; animation: fadeUp .3s ease both; }
 .screen.active { display: block; }
-@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeUp { from { opacity:0; transform:translateY(12px) } to { opacity:1; transform:none } }
+
+/* Estilos de la versión de tu colega */
+.lab-badge { display: inline-flex; align-items: center; gap: 8px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .12em; color: var(--text); text-transform: uppercase; border: 1px solid var(--border); padding: 6px 14px; border-radius: 100px; margin-bottom: 20px; }
+.lab-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #eab308; }
+
+h1 { font-family: 'Playfair Display', serif; font-size: 3.2rem; font-weight: 900; line-height: 1; margin-bottom: 12px; }
+h1 span { color: #ca8a04; }
+
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; margin-bottom: 14px; }
+.card-title { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+
+/* Lista de pasos numerados */
+.step-list { display: flex; flex-direction: column; gap: 12px; }
+.step { display: flex; align-items: flex-start; gap: 12px; }
+.step-num { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: rgba(234,179,8,.15); border: 1px solid rgba(234,179,8,.3); color: #ca8a04; font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; display: flex; align-items: center; justify-content: center; }
+.step-text { font-size: .9rem; color: var(--text-dim); line-height: 1.5; }
+.step-text strong { color: var(--text); }
+
+/* Fila de teclas/colores */
+.key-row { display: flex; gap: 8px; flex-wrap: wrap; }
+.key-pill { display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font-size: 13px; }
+.dot { width: 10px; height: 10px; border-radius: 50%; }
+
+/* Área de Trial fija para evitar el scroll */
+#screen-trial { display: none; flex-direction: column; align-items: center; justify-content: space-between; height: 100dvh; position: fixed; inset: 0; background: var(--bg); padding: 30px 20px; }
+#screen-trial.active { display: flex; }
 
 .response-buttons { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; width: 100%; max-width: 500px; }
-.res-btn {
-  height: 80px; border-radius: 12px; border: 3px solid transparent; cursor: pointer;
-  transition: transform 0.1s; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);
-}
+.res-btn { height: 80px; border-radius: 14px; border: 3px solid transparent; cursor: pointer; transition: transform 0.1s; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
 .res-btn:active { transform: scale(0.92); border-color: #000; }
 
-#screen-trial { display: none; flex-direction: column; align-items: center; justify-content: space-between; height: 100dvh; position: fixed; inset: 0; padding: 40px 20px; background: #fff; }
-#screen-trial.active { display: flex; }
 .stimulus-area { flex: 1; display: flex; align-items: center; justify-content: center; }
-.stimulus-word { font-family: 'Playfair Display', serif; font-size: 4.5rem; font-weight: 900; }
+.stimulus-word { font-family: 'Playfair Display', serif; font-size: 5rem; font-weight: 900; }
 
-#screen-stage-intro { text-align: center; padding-top: 60px; }
-.stage-title { font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--accent); margin-bottom: 20px; }
-.stage-desc { font-size: 1.05rem; line-height: 1.6; color: var(--text); margin-bottom: 30px; text-align: left; }
+.btn-primary { width: 100%; padding: 18px; border-radius: 12px; background: #ca8a04; color: #fff; border: none; font-weight: 700; cursor: pointer; font-size: 1rem; }
+input[type="text"] { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 16px; margin-top: 8px; outline: none; }
 
-.btn-primary { width: 100%; padding: 18px; border-radius: 12px; background: #000; color: #fff; border: none; font-weight: 700; cursor: pointer; font-size: 1rem; }
-.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 20px; }
-input { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 16px; margin-top: 10px; }
+.credit { margin-top: 40px; text-align: center; color: var(--muted); font-size: 16px; line-height: 1.6; font-style: italic; border-top: 1px solid var(--border); padding-top: 20px;}
 
 .feedback-flash { position: fixed; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.1s; z-index: 100; }
 .feedback-flash.correct { background: rgba(22, 163, 74, 0.1); }
@@ -58,38 +80,49 @@ input { width: 100%; padding: 14px; border: 1px solid var(--border); border-radi
 <body>
 
 <div id="screen-start" class="screen active">
-  <h1 style="font-family:'Playfair Display'; font-size: 3rem; margin-bottom: 10px;">Stroop <span>Bonus</span></h1>
-  <p style="color:var(--text-dim); margin-bottom: 30px;">Estudio del Comportamiento Humano · TP5</p>
+  <h1>Test de<br><span>Stroop</span></h1>
   
   <div class="card">
-    <p style="line-height:1.5">A continuación vas a realizar el test de Stroop. El test va a tener dos partes. Antes de cada parte van a aparecer las instrucciones para realizar la misma.</p>
+    <div class="card-title">¿Cómo funciona?</div>
+    <div class="step-list">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-text">Vas a ver una <strong>palabra escrita en color</strong>. Identificá el <strong>color de las letras</strong>, ignorando lo que dice.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-text">Respondé usando los <strong>botones de abajo</strong> lo más rápido posible.</div>
+      </div>
+    </div>
   </div>
 
   <div class="card">
-    <label style="font-size: 0.8rem; font-weight:700; color:var(--text-dim)">ALUMNO / ID</label>
-    <input type="text" id="participant-id" placeholder="Nombre o ID">
+    <div class="card-title">Botones de respuesta</div>
+    <div class="key-row">
+      <div class="key-pill"><div class="dot" style="background:var(--s-rojo)"></div> Rojo</div>
+      <div class="key-pill"><div class="dot" style="background:var(--s-verde)"></div> Verde</div>
+      <div class="key-pill"><div class="dot" style="background:var(--s-azul)"></div> Azul</div>
+      <div class="key-pill"><div class="dot" style="background:var(--s-amarillo)"></div> Amarrillo</div>
+      <div class="key-pill"><div class="dot" style="background:var(--s-negro)"></div> Negro</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Participante</div>
+    <input type="text" id="participant-id" placeholder="Ingresá un pseudónimo para que sea anónimo" autocomplete="off">
   </div>
 
   <button class="btn-primary" onclick="startExperiment()">Comenzar →</button>
-</div>
-
-<div id="screen-stage-intro" class="screen">
-  <div class="stage-title" id="stage-title"></div>
-  <div class="stage-desc" id="stage-desc"></div>
-  <button class="btn-primary" onclick="startBlockTrials()">¡Comenzar etapa!</button>
+  
+  <p class="credit">Adaptado para Estudio del Comportamiento Humano por Analí Taboh.<br>Original de Guillermo Solovey, UTDT.</p>
 </div>
 
 <div id="screen-trial" class="screen">
-  <div style="text-align:center">
-    <div id="current-stage-label" style="font-family:'DM Mono'; font-size:11px; color:var(--accent); text-transform:uppercase;"></div>
-    <div id="trial-progress" style="font-size:13px; color:var(--text-dim); margin-top:5px"></div>
-  </div>
-
+  <div id="trial-progress" style="font-family:'DM Mono'; font-size:12px; color:var(--accent2); text-transform:uppercase;"></div>
   <div class="stimulus-area">
     <div id="fixation" style="font-size: 4rem; color: #e2e8f0;">+</div>
-    <div id="stimulus-word" class="stimulus-word" style="display:none"></div>
+    <div id="stimulus" class="stimulus-word" style="display:none"></div>
   </div>
-
   <div class="response-buttons">
     <button class="res-btn" style="background:var(--s-rojo);" onclick="recordResponse('1')"></button>
     <button class="res-btn" style="background:var(--s-verde);" onclick="recordResponse('2')"></button>
@@ -100,30 +133,15 @@ input { width: 100%; padding: 14px; border: 1px solid var(--border); border-radi
 </div>
 
 <div id="screen-results" class="screen">
-  <h1 style="font-family:'Playfair Display'">Fin del <span>Test</span></h1>
-  <div id="results-summary" style="margin-top:20px"></div>
-  <button class="btn-primary" onclick="location.reload()" style="margin-top:30px">Volver al inicio</button>
+  <h1>Fin del <span>Test</span></h1>
+  <div id="res-summary" class="card" style="margin-top:20px"></div>
+  <button class="btn-primary" onclick="location.reload()">Reiniciar</button>
 </div>
 
 <div class="feedback-flash" id="feedback-flash"></div>
 
 <script>
-const BLOCKS = [
-  { 
-    id: 'CONGRUENTE', 
-    title: 'Tercera Parte', 
-    instructions: '<p>En el centro de la pantalla vas a ver el nombre de un color escrito en letras de algún color.</p><p>Tenés que identificar el <strong>color de las letras</strong>, NO lo que dice la palabra. Tocá el botón del color de la tinta lo más rápido que puedas.</p><p>Tené en cuenta que van a aparecer varios nombres de colores. Continuá hasta el final. Hacélo lo más rápido que puedas.</p>',
-    trials: 20
-  },
-  { 
-    id: 'STROOP', 
-    title: 'Cuarta Parte', 
-    instructions: '<p>En el centro de la pantalla vas a ver el nombre de un color escrito en letras de algún color.</p><p>Nuevamente, tenés que identificar el <strong>color de las letras</strong>, NO lo que dice la palabra. Tocá el botón del color de la tinta lo más rápido que puedas.</p><p>Hacélo lo más rápido que puedas. Continuá hasta el final.</p>',
-    trials: 20
-  }
-];
-
-const COLORS = {
+const INK_COLORS = {
   '1': { label: 'ROJO', css: 'var(--s-rojo)' },
   '2': { label: 'VERDE', css: 'var(--s-verde)' },
   '3': { label: 'AZUL', css: 'var(--s-azul)' },
@@ -131,64 +149,44 @@ const COLORS = {
   '5': { label: 'NEGRO', css: 'var(--s-negro)' }
 };
 
-let currentBlockIdx = 0, currentTrialInBlock = 0, sessionData = [];
+let trials = [], currentTrialIdx = 0, sessionData = [];
 let stimulusStart = 0, awaitingResponse = false, activeCorrectKey = '';
+
+function buildMixedTrials(count) {
+  const list = [];
+  const keys = ['1', '2', '3', '4', '5'];
+  for(let i=0; i<count; i++) {
+    const targetKey = keys[Math.floor(Math.random()*5)];
+    const isCongruent = Math.random() > 0.5;
+    let word = isCongruent ? INK_COLORS[targetKey].label : INK_COLORS[keys.filter(k => k !== targetKey)[Math.floor(Math.random()*4)]].label;
+    list.push({ type: isCongruent ? 'CONGRUENTE' : 'INCONGRUENTE', word, ink: INK_COLORS[targetKey].css, key: targetKey });
+  }
+  return list;
+}
+
+function startExperiment() {
+  if(!document.getElementById('participant-id').value.trim()) return alert("Ingresá un ID.");
+  trials = buildMixedTrials(30);
+  currentTrialIdx = 0;
+  showScreen('screen-trial');
+  runTrial();
+}
 
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
-function startExperiment() {
-  if(!document.getElementById('participant-id').value.trim()) return alert("Ingresá un ID.");
-  currentBlockIdx = 0;
-  showBlockIntro();
-}
-
-function showBlockIntro() {
-  const b = BLOCKS[currentBlockIdx];
-  document.getElementById('stage-title').textContent = b.title;
-  document.getElementById('stage-desc').innerHTML = b.instructions;
-  showScreen('screen-stage-intro');
-}
-
-function startBlockTrials() {
-  currentTrialInBlock = 0;
-  document.getElementById('current-stage-label').textContent = BLOCKS[currentBlockIdx].id === 'CONGRUENTE' ? 'Condición Congruente' : 'Condición Incongruente';
-  showScreen('screen-trial');
-  runTrial();
-}
-
 function runTrial() {
-  const b = BLOCKS[currentBlockIdx];
-  if(currentTrialInBlock >= b.trials) {
-    currentBlockIdx++;
-    if(currentBlockIdx < BLOCKS.length) return showBlockIntro();
-    else return endExperiment();
-  }
-
-  document.getElementById('trial-progress').textContent = `${currentTrialInBlock + 1} / ${b.trials}`;
-  const fix = document.getElementById('fixation'), word = document.getElementById('stimulus-word');
-  
-  fix.style.display = 'block'; word.style.display = 'none';
+  if(currentTrialIdx >= trials.length) return endExperiment();
+  const t = trials[currentTrialIdx];
+  document.getElementById('trial-progress').textContent = `Ensayo ${currentTrialIdx + 1} / ${trials.length}`;
+  const fix = document.getElementById('fixation'), stim = document.getElementById('stimulus');
+  fix.style.display = 'block'; stim.style.display = 'none';
   awaitingResponse = false;
-
   setTimeout(() => {
-    fix.style.display = 'none';
-    const keys = ['1','2','3','4','5'];
-    const targetKey = keys[Math.floor(Math.random()*5)];
-    const distractorKey = keys.filter(k => k !== targetKey)[Math.floor(Math.random()*4)];
-    
-    activeCorrectKey = targetKey;
-
-    if(b.id === 'CONGRUENTE') {
-      word.textContent = COLORS[targetKey].label; word.style.color = COLORS[targetKey].css;
-    } else {
-      word.textContent = COLORS[distractorKey].label; word.style.color = COLORS[targetKey].css;
-    }
-    word.style.display = 'block';
-    stimulusStart = performance.now();
-    awaitingResponse = true;
+    fix.style.display = 'none'; stim.textContent = t.word; stim.style.color = t.ink; stim.style.display = 'block';
+    activeCorrectKey = t.key; stimulusStart = performance.now(); awaitingResponse = true;
   }, 700);
 }
 
@@ -197,27 +195,24 @@ function recordResponse(key) {
   awaitingResponse = false;
   const rt = Math.round(performance.now() - stimulusStart);
   const isCorrect = (key === activeCorrectKey);
-
-  sessionData.push({ block: BLOCKS[currentBlockIdx].id, rt, correct: isCorrect });
-  
-  const flash = document.getElementById('feedback-flash');
-  flash.className = `feedback-flash ${isCorrect ? 'correct' : 'incorrect'} show`;
-  setTimeout(() => flash.classList.remove('show'), 150);
-
-  currentTrialInBlock++;
+  sessionData.push({ type: trials[currentTrialIdx].type, rt, correct: isCorrect });
+  const el = document.getElementById('feedback-flash');
+  el.className = `feedback-flash ${isCorrect ? 'correct' : 'incorrect'} show`;
+  setTimeout(() => el.classList.remove('show'), 150);
+  currentTrialIdx++;
   setTimeout(runTrial, 400);
 }
 
 function endExperiment() {
   showScreen('screen-results');
-  let html = `<div class="card"><div class="card-title">Promedios de TR Correctos (ms)</div>`;
-  BLOCKS.forEach(b => {
-    const data = sessionData.filter(d => d.block === b.id && d.correct);
+  const summary = document.getElementById('res-summary');
+  let html = `<p style="margin-bottom:15px; font-weight:700">Promedios de TR Correctos (ms):</p>`;
+  ['CONGRUENTE', 'INCONGRUENTE'].forEach(type => {
+    const data = sessionData.filter(d => d.type === type && d.correct);
     const avg = data.length ? Math.round(data.reduce((a,c)=>a+c.rt,0)/data.length) : "—";
-    html += `<p style="margin-bottom:8px"><strong>${b.title}:</strong> ${avg} ms</p>`;
+    html += `<p style="margin-bottom:8px"><strong>${type}:</strong> ${avg} ms</p>`;
   });
-  html += `</div>`;
-  document.getElementById('results-summary').innerHTML = html;
+  summary.innerHTML = html;
 }
 </script>
 </body>
