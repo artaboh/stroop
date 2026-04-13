@@ -9,19 +9,18 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@300;400;500&family=Playfair+Display:wght@700;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap');
 
 :root {
-  --bg:        #ffffff; /* Fondo blanco académico */
+  --bg:        #ffffff; 
   --surface:   #f8fafc;
   --border:    #e2e8f0;
-  --accent:    #eab308; /* El amarillo de los números de tu colega */
+  --accent:    #eab308; 
   --accent2:   #2563eb;
   --text:      #0f172a;
   --text-dim:  #64748b;
   --muted:     #94a3b8;
-  /* Tus 5 colores originales */
   --s-rojo:    #e11d48;
   --s-verde:   #16a34a;
   --s-azul:    #2563eb;
-  --s-amarillo: #facc15;
+  --s-amarillo: #facc15; /* Amarillo puro para el estímulo */
   --s-negro:   #000000;
   --radius:    12px;
 }
@@ -33,29 +32,21 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 .screen.active { display: block; }
 @keyframes fadeUp { from { opacity:0; transform:translateY(12px) } to { opacity:1; transform:none } }
 
-/* Estilos de la versión de tu colega */
-.lab-badge { display: inline-flex; align-items: center; gap: 8px; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .12em; color: var(--text); text-transform: uppercase; border: 1px solid var(--border); padding: 6px 14px; border-radius: 100px; margin-bottom: 20px; }
-.lab-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: #eab308; }
-
-h1 { font-family: 'Playfair Display', serif; font-size: 3.2rem; font-weight: 900; line-height: 1; margin-bottom: 12px; }
-h1 span { color: #ca8a04; }
+h1 { font-family: 'Playfair Display', serif; font-size: 3.2rem; font-weight: 900; line-height: 1; margin-bottom: 24px; margin-top: 20px; }
+h1 span { color: #ca8a04; } /* Beige para la interfaz */
 
 .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 22px; margin-bottom: 14px; }
-.card-title { font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
+.card-title { font-family: 'DM Mono', monospace; font-size: 13px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 14px; }
 
-/* Lista de pasos numerados */
 .step-list { display: flex; flex-direction: column; gap: 12px; }
 .step { display: flex; align-items: flex-start; gap: 12px; }
-.step-num { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: rgba(234,179,8,.15); border: 1px solid rgba(234,179,8,.3); color: #ca8a04; font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; display: flex; align-items: center; justify-content: center; }
-.step-text { font-size: .9rem; color: var(--text-dim); line-height: 1.5; }
-.step-text strong { color: var(--text); }
+.step-num { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: rgba(202,138,4,.1); border: 1px solid rgba(202,138,4,.3); color: #ca8a04; font-family: 'DM Mono', monospace; font-size: 11px; font-weight: 500; display: flex; align-items: center; justify-content: center; }
+.step-text { font-size: 1.05rem; color: var(--text-dim); line-height: 1.5; }
 
-/* Fila de teclas/colores */
 .key-row { display: flex; gap: 8px; flex-wrap: wrap; }
 .key-pill { display: flex; align-items: center; gap: 8px; background: #fff; border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font-size: 13px; }
 .dot { width: 10px; height: 10px; border-radius: 50%; }
 
-/* Área de Trial fija para evitar el scroll */
 #screen-trial { display: none; flex-direction: column; align-items: center; justify-content: space-between; height: 100dvh; position: fixed; inset: 0; background: var(--bg); padding: 30px 20px; }
 #screen-trial.active { display: flex; }
 
@@ -64,17 +55,20 @@ h1 span { color: #ca8a04; }
 .res-btn:active { transform: scale(0.92); border-color: #000; }
 
 .stimulus-area { flex: 1; display: flex; align-items: center; justify-content: center; }
-.stimulus-word { font-family: 'Playfair Display', serif; font-size: 5rem; font-weight: 900; }
+/* Ajustado tamaño de letra del estímulo */
+.stimulus-word { font-family: 'Playfair Display', serif; font-size: 3.8rem; font-weight: 900; }
 
-.btn-primary { width: 100%; padding: 18px; border-radius: 12px; background: #ca8a04; color: #fff; border: none; font-weight: 700; cursor: pointer; font-size: 1rem; }
+.btn-primary { width: 100%; padding: 18px; border-radius: 12px; background: #ca8a04; color: #fff; border: none; font-weight: 700; cursor: pointer; font-size: 1.1rem; }
 input[type="text"] { width: 100%; padding: 14px; border: 1px solid var(--border); border-radius: 8px; font-size: 16px; margin-top: 8px; outline: none; }
 
-.credit { margin-top: 40px; text-align: center; color: var(--muted); font-size: 16px; line-height: 1.6; font-style: italic; border-top: 1px solid var(--border); padding-top: 20px;}
+.credit { margin-top: 48px; text-align: center; color: var(--text-dim); font-size: 15px; line-height: 1.6; font-style: italic; border-top: 1px solid var(--border); padding-top: 20px; }
 
 .feedback-flash { position: fixed; inset: 0; pointer-events: none; opacity: 0; transition: opacity 0.1s; z-index: 100; }
 .feedback-flash.correct { background: rgba(22, 163, 74, 0.1); }
 .feedback-flash.incorrect { background: rgba(225, 29, 72, 0.1); }
 .feedback-flash.show { opacity: 1; }
+
+#screen-stage-intro { text-align: center; padding-top: 60px; }
 </style>
 </head>
 <body>
@@ -102,7 +96,7 @@ input[type="text"] { width: 100%; padding: 14px; border: 1px solid var(--border)
       <div class="key-pill"><div class="dot" style="background:var(--s-rojo)"></div> Rojo</div>
       <div class="key-pill"><div class="dot" style="background:var(--s-verde)"></div> Verde</div>
       <div class="key-pill"><div class="dot" style="background:var(--s-azul)"></div> Azul</div>
-      <div class="key-pill"><div class="dot" style="background:var(--s-amarillo)"></div> Amarrillo</div>
+      <div class="key-pill"><div class="dot" style="background:var(--s-amarillo)"></div> Amarillo</div>
       <div class="key-pill"><div class="dot" style="background:var(--s-negro)"></div> Negro</div>
     </div>
   </div>
@@ -114,7 +108,15 @@ input[type="text"] { width: 100%; padding: 14px; border: 1px solid var(--border)
 
   <button class="btn-primary" onclick="startExperiment()">Comenzar →</button>
   
-  <p class="credit">Adaptado para Estudio del Comportamiento Humano (UTDT) por Analí Taboh.<br>Original de Guillermo Solovey para NYPE (UTDT).</p>
+  <p class="credit">Adaptado para la materia Estudio del Comportamiento Humano (TP5).<br>Experimento original de Guillermo Solovey, UTDT.</p>
+</div>
+
+<div id="screen-stage-intro" class="screen">
+  <h1 id="stage-title" style="color:#ca8a04">Práctica</h1>
+  <div class="card">
+    <p id="stage-desc" style="line-height:1.6; color:var(--text-dim)"></p>
+  </div>
+  <button class="btn-primary" onclick="startBlockTrials()">¡Entendido!</button>
 </div>
 
 <div id="screen-trial" class="screen">
@@ -141,6 +143,11 @@ input[type="text"] { width: 100%; padding: 14px; border: 1px solid var(--border)
 <div class="feedback-flash" id="feedback-flash"></div>
 
 <script>
+const BLOCKS = [
+  { id: 'PRACTICA', title: 'Práctica', trials: 6, desc: 'Vamos a hacer unos ensayos de práctica para que te acostumbres a los botones.' },
+  { id: 'TEST', title: 'Test Real', trials: 30, desc: 'Ahora comienza el test real. Los resultados de esta parte serán grabados.' }
+];
+
 const INK_COLORS = {
   '1': { label: 'ROJO', css: 'var(--s-rojo)' },
   '2': { label: 'VERDE', css: 'var(--s-verde)' },
@@ -149,44 +156,59 @@ const INK_COLORS = {
   '5': { label: 'NEGRO', css: 'var(--s-negro)' }
 };
 
-let trials = [], currentTrialIdx = 0, sessionData = [];
+let currentBlockIdx = 0, currentTrialInBlock = 0, sessionData = [];
 let stimulusStart = 0, awaitingResponse = false, activeCorrectKey = '';
-
-function buildMixedTrials(count) {
-  const list = [];
-  const keys = ['1', '2', '3', '4', '5'];
-  for(let i=0; i<count; i++) {
-    const targetKey = keys[Math.floor(Math.random()*5)];
-    const isCongruent = Math.random() > 0.5;
-    let word = isCongruent ? INK_COLORS[targetKey].label : INK_COLORS[keys.filter(k => k !== targetKey)[Math.floor(Math.random()*4)]].label;
-    list.push({ type: isCongruent ? 'CONGRUENTE' : 'INCONGRUENTE', word, ink: INK_COLORS[targetKey].css, key: targetKey });
-  }
-  return list;
-}
-
-function startExperiment() {
-  if(!document.getElementById('participant-id').value.trim()) return alert("Ingresá un ID.");
-  trials = buildMixedTrials(30);
-  currentTrialIdx = 0;
-  showScreen('screen-trial');
-  runTrial();
-}
 
 function showScreen(id) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
+function startExperiment() {
+  if(!document.getElementById('participant-id').value.trim()) return alert("Ingresá un ID.");
+  currentBlockIdx = 0;
+  showBlockIntro();
+}
+
+function showBlockIntro() {
+  const b = BLOCKS[currentBlockIdx];
+  document.getElementById('stage-title').textContent = b.title;
+  document.getElementById('stage-desc').textContent = b.desc;
+  showScreen('screen-stage-intro');
+}
+
+function startBlockTrials() {
+  currentTrialInBlock = 0;
+  showScreen('screen-trial');
+  runTrial();
+}
+
 function runTrial() {
-  if(currentTrialIdx >= trials.length) return endExperiment();
-  const t = trials[currentTrialIdx];
-  document.getElementById('trial-progress').textContent = `Ensayo ${currentTrialIdx + 1} / ${trials.length}`;
+  const b = BLOCKS[currentBlockIdx];
+  if(currentTrialInBlock >= b.trials) {
+    currentBlockIdx++;
+    if(currentBlockIdx < BLOCKS.length) return showBlockIntro();
+    else return endExperiment();
+  }
+
+  document.getElementById('trial-progress').textContent = `${b.title} · Ensayo ${currentTrialInBlock + 1} / ${b.trials}`;
   const fix = document.getElementById('fixation'), stim = document.getElementById('stimulus');
   fix.style.display = 'block'; stim.style.display = 'none';
   awaitingResponse = false;
+
   setTimeout(() => {
-    fix.style.display = 'none'; stim.textContent = t.word; stim.style.color = t.ink; stim.style.display = 'block';
-    activeCorrectKey = t.key; stimulusStart = performance.now(); awaitingResponse = true;
+    fix.style.display = 'none';
+    const keys = ['1','2','3','4','5'];
+    const targetKey = keys[Math.floor(Math.random()*5)];
+    const isCongruent = Math.random() > 0.5;
+    let word = isCongruent ? INK_COLORS[targetKey].label : INK_COLORS[keys.filter(k => k !== targetKey)[Math.floor(Math.random()*4)]].label;
+    
+    stim.textContent = word; stim.style.color = INK_COLORS[targetKey].css; stim.style.display = 'block';
+    activeCorrectKey = targetKey;
+    stim.setAttribute('data-type', isCongruent ? 'CONGRUENTE' : 'INCONGRUENTE');
+    
+    stimulusStart = performance.now();
+    awaitingResponse = true;
   }, 700);
 }
 
@@ -194,12 +216,18 @@ function recordResponse(key) {
   if(!awaitingResponse) return;
   awaitingResponse = false;
   const rt = Math.round(performance.now() - stimulusStart);
+  const type = document.getElementById('stimulus').getAttribute('data-type');
   const isCorrect = (key === activeCorrectKey);
-  sessionData.push({ type: trials[currentTrialIdx].type, rt, correct: isCorrect });
+
+  if(BLOCKS[currentBlockIdx].id === 'TEST') {
+    sessionData.push({ type, rt, correct: isCorrect });
+  }
+
   const el = document.getElementById('feedback-flash');
   el.className = `feedback-flash ${isCorrect ? 'correct' : 'incorrect'} show`;
   setTimeout(() => el.classList.remove('show'), 150);
-  currentTrialIdx++;
+
+  currentTrialInBlock++;
   setTimeout(runTrial, 400);
 }
 
