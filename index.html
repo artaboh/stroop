@@ -145,6 +145,29 @@ input[type="text"] { width: 100%; padding: 14px; border: 1px solid var(--border)
 <div class="feedback-flash" id="feedback-flash"></div>
 
 <script>
+
+// Usá los mismos valores que tiene tu archivo admin.html
+const SUPABASE_URL = 'https://TU_PROYECTO.supabase.co';
+const SUPABASE_KEY = 'TU_ANON_KEY';
+
+// Función para enviar los datos a la nube
+async function sendData(payload) {
+  try {
+    const res = await fetch(SUPABASE_URL + '/rest/v1/stroop_sessions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'apikey': SUPABASE_KEY,
+        'Authorization': 'Bearer ' + SUPABASE_KEY
+      },
+      body: JSON.stringify(payload)
+    });
+    if (!res.ok) throw new Error('Error en el envío');
+  } catch (e) {
+    console.error("No se pudieron guardar los datos:", e);
+  }
+}
+  
 const BLOCKS = [
   { id: 'PRACTICA', title: 'Práctica', trials: 6, desc: 'Vamos a hacer 6 ensayos de práctica para que te acostumbres a los botones.' },
   { id: 'TEST', title: 'Test', trials: 30, desc: 'Ahora comienza el test real de 30 ensayos. ¡Hacelo lo más rápido posible, intentando no equivocarte!' }
@@ -235,14 +258,51 @@ function recordResponse(key) {
 
 function endExperiment() {
   showScreen('screen-results');
+  
+  // 1. Filtramos solo los datos del TEST real (no la práctica)
+  const testData = sessionData; 
+  const conData = testData.filter(d => d.type === 'CONGRUENTE' && d.correct);
+  const incData = testData.filter(d => d.type === 'INCONGRUENTE' && d.correct);
+  
+  // 2. Calculamos métricas para el Admin
+  const rt_con = conData.length ? Math.round(conData.reduce((a,c)=>a+c.rt,0)/conData.length) : null;
+  const rt_inc = incData.length ? Math.round(incData.reduce((a,c)=>a+c.rt,0)/incData.length) : null;
+  
+  const acc_con = Math.round((testData.filter(d=>d.type==='CONGRUENTE' && d.correct).length / testData.filter(d=>d.type==='CONGRUENTE').length) * 100) || 0;
+  const acc_inc = Math.round((testData.filter(d=>d.type==='INCONGRUENTE' && d.correct).length / testData.filter(d=>d.type==='INCONGRUENTE').length) * 100) || 0;
+  
+  const n_correct = testData.filter(d => d.correct).length;
+  const acc_all = Math.round((n_correct / testData.length) * 100);
+
+  // 3. Score para el ranking (más precisión y más velocidad = más puntos)
+  const total_score = (rt_con && rt_inc) ? Math.round((acc_all * 1000) / ((rt_con + rt_inc) / 2)) : 0;
+
+  // 4. Armamos el paquete de datos
+  const payload = {
+    participant_id: document.getElementById('participant-id').value,
+    rt_con, 
+    rt_inc,
+    interference: (rt_inc && rt_con) ? (rt_inc - rt_con) : 0, // <--- Recuperamos este dato para el CSV
+    acc_con, 
+    acc_inc, 
+    total_score,
+    n_correct,
+    acc_all
+  };
+
+  // 5. Lo enviamos
+  sendData(payload);
+
+  // 6. Mostramos el resumen en tu pantalla de resultados
   const summary = document.getElementById('res-summary');
-  let html = `<p style="margin-bottom:15px; font-weight:700">Promedios de TR Correctos (ms):</p>`;
-  ['CONGRUENTE', 'INCONGRUENTE'].forEach(type => {
-    const data = sessionData.filter(d => d.type === type && d.correct);
-    const avg = data.length ? Math.round(data.reduce((a,c)=>a+c.rt,0)/data.length) : "—";
-    html += `<p style="margin-bottom:8px"><strong>${type}:</strong> ${avg} ms</p>`;
-  });
-  summary.innerHTML = html;
+  summary.innerHTML = `
+    <p style="margin-bottom:15px; font-weight:700">Tus promedios (ms):</p>
+    <p style="margin-bottom:8px"><strong>Congruente:</strong> ${rt_con || '—'} ms</p>
+    <p style="margin-bottom:12px"><strong>Incongruente:</strong> ${rt_inc || '—'} ms</p>
+    <p style="font-size:12px; color:var(--text-dim); border-top:1px solid var(--border); padding-top:10px">
+      Tus datos han sido enviados al panel de la clase.
+    </p>
+  `;
 }
 </script>
 </body>
